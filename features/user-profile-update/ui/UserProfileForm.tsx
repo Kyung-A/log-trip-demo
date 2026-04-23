@@ -4,18 +4,13 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { Camera, ChevronLeft, LoaderCircle, UserRound, X } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
 
 import { IProfile } from "@/entities/user";
 
-import { useRouter } from "next/navigation";
-
-import {
-  blobUrlToBase64,
-  getImageUrl,
-  imageUpload,
-} from "@/shared";
+import { blobUrlToBase64, getImageUrl, imageUpload } from "@/shared";
 
 import { updateUserProfileAction } from "../model";
 
@@ -114,7 +109,7 @@ export const UserProfileForm = ({
 
   return (
     <>
-      <header className="bg-white max-w-3xl fixed w-full py-2 border-b border-gray-200 flex items-center justify-between px-4">
+      <header className="bg-white max-w-3xl pb-2 pt-14 fixed w-full py-2 border-b border-gray-200 flex items-center justify-between px-4">
         <button
           onClick={() => router.push("/mypage")}
           className="flex items-center gap-x-1"

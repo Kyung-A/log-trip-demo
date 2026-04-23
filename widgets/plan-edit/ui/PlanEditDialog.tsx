@@ -66,7 +66,10 @@ export const PlanEditDialog = ({
 
     const result = await updatePlanAction({
       id: plan.id,
-      region_names: data.cities.map((c) => ({ id: c.id, region_name: c.region_name })),
+      region_names: data.cities.map((c) => ({
+        id: c.id,
+        region_name: c.region_name,
+      })),
       start_date: dayjs(data.dateRange.start).format("YYYY-MM-DD"),
       end_date: dayjs(data.dateRange.end).format("YYYY-MM-DD"),
     });
@@ -83,7 +86,7 @@ export const PlanEditDialog = ({
       open={isOpen}
       className="fixed inset-0 z-50 w-full h-full bg-white max-w-3xl mx-auto flex flex-col"
     >
-      <header className="flex items-center justify-between px-4 py-2 border-b border-zinc-200 shrink-0">
+      <header className="flex items-center justify-between px-4 pb-2 pt-14 border-b border-zinc-200 shrink-0">
         <button
           type="button"
           onClick={handleClose}
@@ -113,7 +116,7 @@ export const PlanEditDialog = ({
           )}
         </div>
 
-        <div className="px-4 pb-8 pt-3 flex gap-x-2 shrink-0 border-t border-zinc-100">
+        <div className="px-4 pb-14 pt-3 flex gap-x-2 shrink-0 border-t border-zinc-100">
           {editStep === 1 ? (
             <button
               type="button"

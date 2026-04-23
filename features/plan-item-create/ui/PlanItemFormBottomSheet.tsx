@@ -145,7 +145,7 @@ export const PlanItemFormBottomSheet = ({
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full bg-latte text-white font-semibold py-3 rounded-lg disabled:bg-zinc-200 disabled:text-zinc-400 mb-4"
+          className="w-full bg-latte text-white font-semibold py-3 rounded-lg disabled:bg-zinc-200 disabled:text-zinc-400 mb-14"
         >
           {isSubmitting ? "저장 중..." : "완료"}
         </button>

@@ -42,7 +42,10 @@ export const PlanForm = ({ regions }: { regions: IRegion[] | null }) => {
     if (!data.dateRange.start || !data.dateRange.end) return;
 
     const result = await createPlanAction({
-      region_names: data.cities.map((c) => ({ id: c.id, region_name: c.region_name })),
+      region_names: data.cities.map((c) => ({
+        id: c.id,
+        region_name: c.region_name,
+      })),
       start_date: dayjs(data.dateRange.start).format("YYYY-MM-DD"),
       end_date: dayjs(data.dateRange.end).format("YYYY-MM-DD"),
     });
@@ -57,12 +60,10 @@ export const PlanForm = ({ regions }: { regions: IRegion[] | null }) => {
       onSubmit={handleSubmit(onSubmit)}
       className="flex flex-col h-screen overflow-hidden"
     >
-      <header className="bg-white flex sticky top-0 w-full py-2 border-b border-zinc-200 px-4 z-20">
+      <header className="bg-white flex sticky top-0 w-full pb-2 pt-14 border-b border-zinc-200 px-4 z-20">
         <button
           type="button"
-          onClick={() =>
-            step === 1 ? router.back() : setStep(1)
-          }
+          onClick={() => (step === 1 ? router.back() : setStep(1))}
           className="flex items-center gap-x-1"
         >
           <ChevronLeft size={22} color="#646464" />
@@ -99,7 +100,7 @@ export const PlanForm = ({ regions }: { regions: IRegion[] | null }) => {
         )}
       </main>
 
-      <footer className="bg-white max-w-3xl pt-4 pb-14 w-full border-t border-zinc-200 px-4 fixed bottom-0">
+      <footer className="bg-white max-w-3xl pt-4 pb-14 w-full border-t border-zinc-200 px-4 fixed bottom-14">
         {step === 1 ? (
           <button
             type="button"

@@ -2,8 +2,9 @@ import Link from "next/link";
 
 import { getDiaries, getPublicDiaries } from "@/entities/diary";
 
-import { EmptyView } from "@/shared";
 import { DEMO_USER_ID } from "@/shared/data/fake-user";
+
+import { EmptyView } from "@/shared";
 import { DiaryList } from "@/widgets/diary-list";
 
 interface IDiaryProps {
@@ -33,7 +34,7 @@ export default async function Diary({ searchParams }: IDiaryProps) {
 
   return (
     <div>
-      <header className="p-4 sticky top-0 z-30 bg-white">
+      <header className="px-4 pb-4 pt-14 sticky top-0 z-30 bg-white">
         <h1 className="text-3xl font-semibold">여행</h1>
         <nav className="mt-2 flex items-center gap-x-2">
           <Link

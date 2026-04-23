@@ -8,7 +8,6 @@ import { useRouter } from "next/navigation";
 
 import { IDiaryCounters, IProfile } from "@/entities/user";
 
-
 interface IProfileWidgetProps {
   profile: IProfile;
   counters: IDiaryCounters;
@@ -38,7 +37,7 @@ export const UserProfileWidget = ({
   return (
     <>
       {!isMine && (
-        <header className="bg-white max-w-3xl fixed w-full py-2 border-b border-gray-200 flex items-center justify-between px-4 z-10">
+        <header className="bg-white max-w-3xl fixed w-full pb-2 pt-14 border-b border-gray-200 flex items-center justify-between px-4 z-10">
           <button
             onClick={() => router.push("/diary?tab=community")}
             className="flex items-center gap-x-1"
@@ -49,8 +48,8 @@ export const UserProfileWidget = ({
         </header>
       )}
 
-      <div className="items-center w-full flex flex-col">
-        <div className="w-32 h-32 mt-20 bg-[#d5b2a7] rounded-full">
+      <div className="items-center w-full flex flex-col px-4">
+        <div className="w-32 h-32 mt-30 bg-[#d5b2a7] rounded-full">
           {profile?.profile_image ? (
             <Image
               src={profile.profile_image}
@@ -67,7 +66,9 @@ export const UserProfileWidget = ({
           )}
         </div>
         <p className="mt-4 text-xl font-semibold">{profile?.nickname}</p>
-        <p className="mt-3">{profile?.about ?? "자기소개가 없습니다."}</p>
+        <p className="mt-3 text-center">
+          {profile?.about ?? "자기소개가 없습니다."}
+        </p>
         <div className="flex items-center mt-6">
           <div className="flex items-center px-6 flex-col">
             <p className="text-sm text-gray-500">공개 여행 일기</p>
@@ -84,26 +85,6 @@ export const UserProfileWidget = ({
               {counters?.diaries_count}
             </p>
           </div>
-          {/* // TODO: 추후 추가 예정
-        <button
-          onClick={() => router.push("/mypage/apply-status")}
-          className="flex items-center px-6 flex-col"
-        >
-          <p className="text-sm text-gray-500">동행 신청 현황</p>
-          <p className="text-lg mt-0.5 font-semibold text-latte">
-            {counters?.applied_count}
-          </p>
-        </button>
-        <div className="h-10 w-px bg-gray-200"></div>
-        <button
-          onClick={() => router.push("/mypage/recruit-status")}
-          className="flex flex-col items-center px-6"
-        >
-          <p className="text-sm text-gray-500">동행 모집 현황</p>
-          <p className="text-lg mt-0.5 font-semibold text-latte">
-            {counters?.received_count}
-          </p>
-        </button> */}
         </div>
         {children}
       </div>

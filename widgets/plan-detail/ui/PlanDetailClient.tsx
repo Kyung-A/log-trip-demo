@@ -53,6 +53,7 @@ export const PlanDetailClient = ({
   const [items, setItems] = useState<IPlanItem[]>(initialItems);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setItems(initialItems);
   }, [initialItems]);
 
@@ -96,7 +97,7 @@ export const PlanDetailClient = ({
 
   return (
     <div className="w-full relative pb-6">
-      <header className="bg-white max-w-3xl sticky top-0 w-full py-2 border-b border-zinc-200 flex items-center justify-between px-4 z-20">
+      <header className="bg-white max-w-3xl sticky top-0 w-full pb-2 pt-14 border-b border-zinc-200 flex items-center justify-between px-4 z-20">
         <button
           onClick={() => router.push("/plan")}
           className="flex items-center gap-x-1"

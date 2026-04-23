@@ -41,29 +41,29 @@ export function TabBar() {
       )}
 
       {showWriteMenu && (
-        <div className="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-y-2 items-center bg-[#d5b2a7] rounded-lg">
-          <button
-            onClick={() => {
-              setShowWriteMenu(false);
-              router.push("/plan/new");
-            }}
-            className="px-6 py-3 text-white font-semibold"
-          >
-            동행 모집
-          </button>
+        <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-y-2 items-center bg-[#d5b2a7] rounded-lg">
           <button
             onClick={() => {
               setShowWriteMenu(false);
               router.push("/diary/new");
             }}
-            className="pb-3 px-6 text-white font-semibold"
+            className="px-6 py-3 text-white font-semibold"
           >
             일기 쓰기
+          </button>
+          <button
+            onClick={() => {
+              setShowWriteMenu(false);
+              router.push("/plan/new");
+            }}
+            className="px-6 pb-3 text-white font-semibold"
+          >
+            여행 일정
           </button>
         </div>
       )}
 
-      <nav className="fixed bottom-0 left-0 right-0 z-30 bg-white border-t border-gray-200">
+      <nav className="fixed bottom-0 pb-6 left-0 right-0 z-30 bg-white border-t border-gray-200">
         <div className="max-w-3xl mx-auto flex items-center px-3.5">
           {TABS.map((tab, i) => {
             if (tab.href === null) {

@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState, useTransition } from "react";
 
 import { ChevronLeft, LoaderCircle } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
@@ -10,13 +11,7 @@ import { v4 as uuidv4 } from "uuid";
 import { IDiary } from "@/entities/diary";
 import { IRegion } from "@/entities/region";
 
-import { useRouter } from "next/navigation";
-
-import {
-  blobUrlToBase64,
-  getImageUrl,
-  imageUpload,
-} from "@/shared";
+import { blobUrlToBase64, getImageUrl, imageUpload } from "@/shared";
 
 import { ContentEditor } from "./ContentEditor";
 import { DrawingCanvasDialog } from "./DrawingCanvasDialog";
@@ -223,7 +218,7 @@ export const DiaryForm = ({
 
   return (
     <>
-      <header className="sticky h-10 top-0 z-30 w-full bg-white border-b border-gray-300 flex items-center px-2">
+      <header className="sticky pt-14 pb-3 top-0 z-30 w-full bg-white border-b border-gray-300 flex items-center px-2">
         <button
           onClick={() => router.back()}
           className="flex items-center gap-x-1"

@@ -41,7 +41,7 @@ export default async function PlanPage({ searchParams }: PlanPageProps) {
   return (
     <AuthLayout>
       <div className="bg-beige min-h-screen w-full overflow-hidden">
-        <header className="p-4 sticky top-0 z-30 bg-white">
+        <header className="px-4 pb-4 pt-14 sticky top-0 z-30 bg-white">
           <h1 className="text-3xl font-semibold">여행 일정</h1>
 
           <nav className="flex mt-2 items-center gap-x-2 flex-nowrap overflow-x-auto">
