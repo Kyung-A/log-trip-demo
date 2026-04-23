@@ -5,37 +5,14 @@ import { useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
-import { IProfile } from "@/entities/user";
-
-import { deleteUserAction } from "@/features/user-delete";
 import { logoutAction } from "@/features/user-logout";
 
-export const AccountSettings = ({
-  userId,
-  profile,
-}: {
-  userId?: string;
-  profile: IProfile;
-}) => {
+export const AccountSettings = () => {
   const router = useRouter();
 
   const handleLogout = useCallback(async () => {
     await logoutAction();
   }, []);
-
-  const handleDeleteUser = useCallback(async () => {
-    if (
-      !confirm(
-        "탈퇴 할 경우 모든 데이터가 삭제되며,\n소셜 로그인 연동도 해제됩니다.\n정말 탈퇴 하시겠습니까?",
-      )
-    )
-      return;
-
-    const { success } = await deleteUserAction(userId, profile?.platform);
-    if (success) {
-      router.push("/login");
-    }
-  }, [userId, profile?.platform, router]);
 
   useEffect(() => {
     window.showWebAlert = (message: string) => {
@@ -57,9 +34,6 @@ export const AccountSettings = ({
       </button>
       <button onClick={() => handleLogout()} className="mt-6">
         <p className="text-latte underline">로그아웃</p>
-      </button>
-      <button onClick={handleDeleteUser} className="mt-4">
-        <p className="text-latte text-sm">계정 탈퇴</p>
       </button>
     </>
   );

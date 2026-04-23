@@ -1,4 +1,5 @@
 import { IPlanItem, ITravelPlan } from "@/entities/plan";
+
 import { DEMO_USER_ID } from "./fake-user";
 
 export const fakePlans: ITravelPlan[] = [

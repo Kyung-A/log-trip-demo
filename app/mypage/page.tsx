@@ -12,7 +12,7 @@ export default async function MyPage() {
 
   return (
     <UserProfileWidget isMine profile={profile!} counters={counters!}>
-      <AccountSettings profile={profile!} userId={DEMO_USER_ID} />
+      <AccountSettings />
     </UserProfileWidget>
   );
 }
