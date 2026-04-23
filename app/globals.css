@@ -6,9 +6,17 @@
   --color-latte: #a38f86;
 }
 
+body {
+  -ms-overflow-style: none;
+}
+::-webkit-scrollbar {
+  display: none;
+}
+
 html,
 body {
   background-color: #f4f4f5;
+  -ms-overflow-style: none;
 }
 
 .mapboxgl-ctrl-logo {
