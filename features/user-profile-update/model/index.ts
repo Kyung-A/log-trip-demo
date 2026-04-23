@@ -1,0 +1,1 @@
+export { updateUserProfileAction } from "./updateUserProfileAction";

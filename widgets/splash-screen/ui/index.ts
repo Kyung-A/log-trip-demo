@@ -1,0 +1,1 @@
+export { MapSplashScreen } from "./MapSplashScreen";

@@ -1,0 +1,215 @@
+"use client";
+
+import { useCallback, useEffect, useRef, useState } from "react";
+
+import { Camera, ChevronLeft, LoaderCircle, UserRound, X } from "lucide-react";
+import Image from "next/image";
+import { Controller, useForm } from "react-hook-form";
+import { v4 as uuidv4 } from "uuid";
+
+import { IProfile } from "@/entities/user";
+
+import { useRouter } from "next/navigation";
+
+import {
+  blobUrlToBase64,
+  getImageUrl,
+  imageUpload,
+} from "@/shared";
+
+import { updateUserProfileAction } from "../model";
+
+export const UserProfileForm = ({
+  profile,
+  userId,
+}: {
+  profile: IProfile;
+  userId?: string;
+}) => {
+  const router = useRouter();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const {
+    control,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = useForm({
+    defaultValues: profile,
+  });
+
+  const [profileImg, setProfileImg] = useState<string | null>(null);
+
+  const handleDeleted = useCallback(() => setProfileImg(null), []);
+
+  const handleFileChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files;
+      if (!file || file.length === 0) return;
+
+      const newImages = URL.createObjectURL(file[0]);
+
+      setProfileImg(newImages);
+      event.target.value = "";
+    },
+    [],
+  );
+
+  const uploadAndGetUrlImage = async (currentImg: string) => {
+    if (!currentImg.startsWith("blob:")) return currentImg;
+
+    try {
+      const path = `profiles/${userId}/${uuidv4()}.jpg`;
+      const base64DataUrl = await blobUrlToBase64(currentImg);
+
+      const base64Image = base64DataUrl.split(";base64,").pop();
+      if (!base64Image) return null;
+
+      const buffer = Buffer.from(base64Image, "base64");
+
+      await imageUpload("log-trip-images", path, buffer);
+
+      const { publicUrl } = getImageUrl("log-trip-images", path);
+      return publicUrl;
+    } catch (error) {
+      console.error("Image upload failed:", error);
+      return null;
+    }
+  };
+
+  const handleSaveProfile = async (formData: {
+    nickname: string | null;
+    about: string | null;
+    profile_image: string | null;
+  }) => {
+    try {
+      let imageUrl = profileImg;
+
+      if (profileImg && profileImg.startsWith("blob:")) {
+        imageUrl = await uploadAndGetUrlImage(profileImg);
+      } else if (!profileImg) {
+        imageUrl = null;
+      }
+
+      const data = {
+        ...formData,
+        profile_image: imageUrl,
+      };
+
+      const { success } = await updateUserProfileAction({ userId, ...data });
+      if (success) {
+        router.push("/mypage");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    if (profile?.profile_image) {
+      requestAnimationFrame(() => {
+        setProfileImg(profile.profile_image);
+      });
+    }
+  }, [profile?.profile_image]);
+
+  return (
+    <>
+      <header className="bg-white max-w-3xl fixed w-full py-2 border-b border-gray-200 flex items-center justify-between px-4">
+        <button
+          onClick={() => router.push("/mypage")}
+          className="flex items-center gap-x-1"
+        >
+          <ChevronLeft size={22} color="#646464" />
+          <span className="text-lg">뒤로</span>
+        </button>
+        {isSubmitting ? (
+          <LoaderCircle
+            className="animate-spin ml-auto"
+            size={24}
+            color="#9f9fa9"
+          />
+        ) : (
+          <button
+            type="submit"
+            className="text-lg text-blue-500"
+            onClick={handleSubmit(handleSaveProfile)}
+          >
+            완료
+          </button>
+        )}
+      </header>
+
+      <main className="items-center flex flex-col w-full min-h-screen">
+        <div className="relative w-32 h-32 mt-40 bg-[#d5b2a7] rounded-full">
+          {profileImg ? (
+            <button
+              onClick={handleDeleted}
+              className="absolute right-0 top-1 bg-[#cdc6c3] rounded-full w-8 h-8 flex items-center justify-center"
+            >
+              <X size={20} color="#fff" />
+            </button>
+          ) : (
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              className="absolute right-0 top-1 bg-[#cdc6c3] rounded-full w-8 h-8 flex items-center justify-center"
+            >
+              <Camera size={20} color="#fff" />
+            </button>
+          )}
+          <input
+            type="file"
+            accept="image/*"
+            ref={fileInputRef}
+            onChange={handleFileChange}
+            className="hidden"
+          />
+          {profileImg ? (
+            <Image
+              src={profileImg}
+              width={0}
+              height={0}
+              sizes="100vw"
+              alt="profile image"
+              className="object-cover w-full h-full rounded-full"
+            />
+          ) : (
+            <div className="items-center flex justify-center w-full h-full">
+              <UserRound size={60} color="#fff" />
+            </div>
+          )}
+        </div>
+        {/* TODO: 닉네임 필수 */}
+        <Controller
+          control={control}
+          name="nickname"
+          rules={{
+            required: "닉네임은 필수입니다.",
+          }}
+          render={({ field: { onChange, value } }) => (
+            <input
+              className="w-40 mt-6 text-xl font-semibold text-center outline-0"
+              placeholder="낙네임을 작성해주세요"
+              onChange={onChange}
+              value={value}
+              maxLength={10}
+              readOnly
+            />
+          )}
+        />
+        <Controller
+          control={control}
+          name="about"
+          render={({ field: { onChange, value } }) => (
+            <input
+              className="w-64 mt-4 text-center outline-0"
+              placeholder="소개를 작성해주세요"
+              onChange={onChange}
+              value={value ?? ""}
+              maxLength={30}
+            />
+          )}
+        />
+      </main>
+    </>
+  );
+};

@@ -1,0 +1,55 @@
+import { IDiaryRegions } from "@/entities/diary";
+import { DEMO_USER_ID } from "./fake-user";
+
+export const fakeDiaryRegions: IDiaryRegions[] = [
+  {
+    diary_id: "diary-001",
+    region_code: "JP-13",
+    created_at: "2024-03-15T00:00:00.000Z",
+    country_code: "JP",
+    region_name: "도쿄도",
+    country_name: "일본",
+    shape_name: "Tokyo",
+    diaries: { user_id: DEMO_USER_ID },
+  },
+  {
+    diary_id: "diary-002",
+    region_code: "FR-IDF",
+    created_at: "2024-06-10T00:00:00.000Z",
+    country_code: "FR",
+    region_name: "일 드 프랑스",
+    country_name: "프랑스",
+    shape_name: "Île-de-France",
+    diaries: { user_id: DEMO_USER_ID },
+  },
+  {
+    diary_id: "diary-003",
+    region_code: "IT-MI",
+    created_at: "2024-06-15T00:00:00.000Z",
+    country_code: "IT",
+    region_name: "밀라노",
+    country_name: "이탈리아",
+    shape_name: "Milan",
+    diaries: { user_id: DEMO_USER_ID },
+  },
+  {
+    diary_id: "diary-004",
+    region_code: "ES-MD",
+    created_at: "2024-06-20T00:00:00.000Z",
+    country_code: "ES",
+    region_name: "마드리드",
+    country_name: "스페인",
+    shape_name: "Madrid",
+    diaries: { user_id: DEMO_USER_ID },
+  },
+  {
+    diary_id: "diary-005",
+    region_code: "TH-10",
+    created_at: "2024-09-01T00:00:00.000Z",
+    country_code: "TH",
+    region_name: "방콕",
+    country_name: "태국",
+    shape_name: "Bangkok",
+    diaries: { user_id: DEMO_USER_ID },
+  },
+];
