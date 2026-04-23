@@ -2,6 +2,7 @@ import { getDiaryCounter, getUserProfile } from "@/entities/user";
 
 import { DEMO_USER_ID } from "@/shared/data/fake-user";
 
+import { AuthLayout } from "@/widgets/auth";
 import { AccountSettings, UserProfileWidget } from "@/widgets/user-profile";
 
 export default async function MyPage() {
@@ -11,8 +12,10 @@ export default async function MyPage() {
   if (!profile && !counters) return null;
 
   return (
-    <UserProfileWidget isMine profile={profile!} counters={counters!}>
-      <AccountSettings />
-    </UserProfileWidget>
+    <AuthLayout>
+      <UserProfileWidget isMine profile={profile!} counters={counters!}>
+        <AccountSettings />
+      </UserProfileWidget>
+    </AuthLayout>
   );
 }
