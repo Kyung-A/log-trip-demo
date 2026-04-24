@@ -30,7 +30,7 @@ export const fakeDiaries: IDiary[] = [
         country_name: "일본",
       },
     ],
-    is_public: true,
+    is_public: false,
     is_report: false,
   },
   {
@@ -53,7 +53,7 @@ export const fakeDiaries: IDiary[] = [
         country_name: "프랑스",
       },
     ],
-    is_public: true,
+    is_public: false,
     is_report: false,
   },
   {
@@ -99,7 +99,7 @@ export const fakeDiaries: IDiary[] = [
         country_name: "스페인",
       },
     ],
-    is_public: true,
+    is_public: false,
     is_report: false,
   },
   {
@@ -122,7 +122,7 @@ export const fakeDiaries: IDiary[] = [
         country_name: "태국",
       },
     ],
-    is_public: true,
+    is_public: false,
     is_report: false,
   },
   {
@@ -172,25 +172,3 @@ export const fakeDiaries: IDiary[] = [
     is_report: false,
   },
 ];
-
-export const getPublicFakeDiaries = () =>
-  fakeDiaries.filter((d) => d.is_public && !d.is_report);
-
-export const addFakeDiary = (diary: IDiary) => {
-  fakeDiaries.push(diary);
-};
-
-export const removeFakeDiary = (id: string) => {
-  const idx = fakeDiaries.findIndex((d) => d.id === id);
-  if (idx !== -1) fakeDiaries.splice(idx, 1);
-};
-
-export const updateFakeDiaryPublic = (id: string, isPublic: boolean) => {
-  const diary = fakeDiaries.find((d) => d.id === id);
-  if (diary) diary.is_public = isPublic;
-};
-
-export const updateFakeDiaryReport = (id: string) => {
-  const diary = fakeDiaries.find((d) => d.id === id);
-  if (diary) diary.is_report = true;
-};

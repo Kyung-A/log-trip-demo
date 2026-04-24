@@ -1,72 +1,64 @@
-import Link from "next/link";
+"use client";
+import { useMemo, useState } from "react";
 
-import {
-  getDiariesAction,
-  getPublicDiariesAction,
-  DiaryList,
-} from "@/features/diary";
+import { DiaryList, useDiary } from "@/features/diary";
 import { EmptyView } from "@/shared";
-import { DEMO_USER_ID } from "@/shared/data";
 
-interface IDiaryProps {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-}
+export default function Diary() {
+  const [currentTab, setCurrentTab] = useState<"diary" | "community">("diary");
+  const { data, setData } = useDiary();
 
-export default async function Diary({ searchParams }: IDiaryProps) {
-  const params = await searchParams;
-  const currentTab = params.tab || "diary";
-
-  const data =
-    currentTab === "diary"
-      ? getDiariesAction(DEMO_USER_ID, 1, 10)
-      : getPublicDiariesAction(1, 10);
-
-  if (data.length === 0) {
-    return (
-      <EmptyView
-        message={
-          currentTab === "community"
-            ? "공개된 일기가 없습니다\n가장 먼저 내 일기를 공개 해보세요!"
-            : "작성된 일기가 없습니다"
-        }
-      />
-    );
-  }
+  const displayedDiaries = useMemo(() => {
+    if (currentTab === "community") {
+      return data.filter((d) => d.is_public && !d.is_report);
+    }
+    return data;
+  }, [data, currentTab]);
 
   return (
-    <div>
+    <>
       <header className="px-4 pb-4 pt-14 sticky top-0 z-30 bg-white">
         <h1 className="text-3xl font-semibold">여행</h1>
         <nav className="mt-2 flex items-center gap-x-2">
-          <Link
-            href="?tab=diary"
+          <button
+            onClick={() => setCurrentTab("diary")}
             className={`px-4 rounded-full py-0.5 text-base cursor-pointer border ${
               currentTab === "diary"
                 ? "bg-[#e9dcd9] border-[#e9dcd9] text-latte font-semibold"
                 : "text-zinc-500 border-zinc-300"
             }`}
-            scroll={false}
           >
             일기
-          </Link>
-          <Link
-            href="?tab=community"
+          </button>
+          <button
+            onClick={() => setCurrentTab("community")}
             className={`px-4 rounded-full py-0.5 text-base cursor-pointer border ${
               currentTab === "community"
                 ? "bg-[#e9dcd9] border-[#e9dcd9] text-latte font-semibold"
                 : "text-zinc-500 border-zinc-300"
             }`}
-            scroll={false}
           >
             커뮤니티
-          </Link>
+          </button>
         </nav>
       </header>
-      <DiaryList
-        data={data}
-        isNotFeed={currentTab === "diary" ? true : false}
-        userId={DEMO_USER_ID}
-      />
-    </div>
+
+      {displayedDiaries.length === 0 ? (
+        <EmptyView
+          message={
+            currentTab === "community"
+              ? "공개된 일기가 없습니다\n가장 먼저 내 일기를 공개 해보세요!"
+              : "작성된 일기가 없습니다"
+          }
+        />
+      ) : (
+        <DiaryList
+          data={displayedDiaries}
+          setData={setData}
+          currentTab={currentTab}
+          isNotFeed={currentTab === "diary" ? true : false}
+        />
+      )}
+    </>
   );
 }

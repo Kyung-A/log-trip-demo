@@ -14,7 +14,7 @@ import { IDiary } from "../../types";
 
 interface IDiaryItem {
   item: IDiary;
-  handleReportDiary: (id: string, userId: string) => void;
+  handleReportDiary: (id: string) => void;
   handleDeleteDiary: (item: IDiary) => void;
   handleIsPublicDiaryChange: (
     id: string,
@@ -22,7 +22,6 @@ interface IDiaryItem {
     userId?: string,
   ) => void;
   isNotFeed: boolean;
-  isPending: boolean;
 }
 
 export const DiaryItem = ({
@@ -31,7 +30,6 @@ export const DiaryItem = ({
   handleDeleteDiary,
   handleIsPublicDiaryChange,
   isNotFeed,
-  isPending,
 }: IDiaryItem) => {
   const [openId, setOpenId] = useState<string | null>(null);
   const popoverRef = useClickOutside<HTMLDivElement>(() => {
@@ -58,7 +56,6 @@ export const DiaryItem = ({
             onToggle={onToggle}
             isNotFeed={isNotFeed}
             handleIsPublicDiaryChange={handleIsPublicDiaryChange}
-            isPending={isPending}
           />
 
           {item.diary_images && item.diary_images.length > 0 && (
@@ -78,11 +75,10 @@ export const DiaryItem = ({
 
           {openId === item.id && (
             <DiaryPopoverMenu
-              onReport={() => handleReportDiary(item.id!, item.user_id!)}
+              onReport={() => handleReportDiary(item.id!)}
               onDelete={() => handleDeleteDiary(item)}
               ref={popoverRef}
               isNotFeed={isNotFeed}
-              isPending={isPending}
             />
           )}
         </article>

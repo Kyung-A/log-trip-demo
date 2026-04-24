@@ -1,21 +1,23 @@
 "use client";
 
-import { useCallback, useEffect, useState, useTransition } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { ChevronLeft, LoaderCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import { v4 as uuidv4 } from "uuid";
 
 import { IRegion } from "@/features/region";
 import { blobUrlToBase64 } from "@/shared";
+import { DEMO_USER_ID } from "@/shared/data";
 
 import { ContentEditor } from "./ContentEditor";
 import { DrawingCanvasDialog } from "./DrawingCanvasDialog";
 import { DrawingModeToggle } from "./DrawingModeToggle";
 import { ImageEditDialog } from "./ImageEditDialog";
 import { UploadDiaryImageField } from "./UploadDiaryImageField";
-import { CitySelectField, createDiaryAction, IDiary } from "../..";
+import { CitySelectField, IDiary, useDiary } from "../..";
 
 const DEFAULT_FORM_VALUES: Partial<IDiary> = {
   user_id: "",
@@ -46,7 +48,8 @@ export const DiaryForm = ({
   const [currentEditImage, setCurrentEditImage] = useState<string | null>(null);
 
   const router = useRouter();
-  const [, startTransition] = useTransition();
+
+  const { setData } = useDiary();
 
   const {
     control,
@@ -165,10 +168,24 @@ export const DiaryForm = ({
         body = { ...body, drawing_content: drawingContentUrl };
       }
 
-      startTransition(async () => {
-        createDiaryAction(body as IDiary);
-        router.push("/diary");
-      });
+      const id = uuidv4();
+
+      setData((prev) => [
+        {
+          ...body,
+          id,
+          user_id: DEMO_USER_ID,
+          user_info: {
+            nickname: "여행자김로그",
+            email: "demo@logtrip.com",
+            profile_image: "",
+            about: "여행을 통해 세상을 배우는 중입니다.",
+          },
+        },
+        ...prev,
+      ]);
+
+      router.push("/diary");
     },
     (error) => {
       toast.error(Object.values(error)[0].message);
