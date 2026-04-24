@@ -1,14 +1,12 @@
 import Link from "next/link";
 
 import {
-  DiaryList,
   getDiariesAction,
   getPublicDiariesAction,
+  DiaryList,
 } from "@/features/diary";
-
-import { DEMO_USER_ID } from "@/shared/data";
-
 import { EmptyView } from "@/shared";
+import { DEMO_USER_ID } from "@/shared/data";
 
 interface IDiaryProps {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;

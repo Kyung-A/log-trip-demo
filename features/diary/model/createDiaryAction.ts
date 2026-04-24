@@ -1,6 +1,3 @@
-"use server";
-
-import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
 
@@ -8,7 +5,7 @@ import { addFakeDiary, DEMO_USER_ID } from "@/shared/data";
 
 import { IDiary } from "../types";
 
-export const createDiaryAction = (data: IDiary) => {
+export const createDiaryAction = async (data: IDiary) => {
   const id = uuidv4();
   addFakeDiary({
     ...data,
@@ -22,6 +19,5 @@ export const createDiaryAction = (data: IDiary) => {
     },
   });
 
-  revalidatePath("/diary");
   redirect("/diary");
 };

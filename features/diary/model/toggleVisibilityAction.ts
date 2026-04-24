@@ -1,7 +1,3 @@
-"use server";
-
-import { revalidatePath } from "next/cache";
-
 import { updateFakeDiaryPublic } from "@/shared/data";
 
 export const toggleVisibilityAction = (
@@ -10,6 +6,5 @@ export const toggleVisibilityAction = (
   _userId?: string,
 ) => {
   updateFakeDiaryPublic(id, state);
-  revalidatePath("/diary");
   return { success: true };
 };

@@ -5,14 +5,13 @@ import { useCallback, useEffect, useRef, useTransition } from "react";
 import { RefreshCcw } from "lucide-react";
 import { useRouter } from "next/navigation";
 
+import { IGeoJson } from "@/features/region";
 import { useMapbox } from "@/shared";
-
-import "mapbox-gl/dist/mapbox-gl.css";
 
 import { revalidateAllData } from "../model";
 import { MapSplashScreen } from "./MapSplashScreen";
 
-import { IGeoJson } from "@/features/region";
+import "mapbox-gl/dist/mapbox-gl.css";
 
 export function WorldMap({
   geoJson,

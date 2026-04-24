@@ -1,6 +1,3 @@
-"use server";
-
-import { revalidatePath } from "next/cache";
 import { v4 as uuidv4 } from "uuid";
 
 import { addFakePlan, DEMO_USER_ID } from "@/shared/data";
@@ -28,8 +25,6 @@ export const createPlanAction = (
     ...input,
     created_at: new Date().toISOString(),
   });
-
-  revalidatePath("/plan");
 
   return { success: true, id };
 };

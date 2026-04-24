@@ -1,5 +1,3 @@
-"use server";
-
 import { fakeDiaries } from "@/shared/data";
 
 import { IDiary } from "../types";

@@ -1,7 +1,3 @@
-"use server";
-
-import { revalidatePath } from "next/cache";
-
 import { updateFakePlanById, getPlanById } from "@/shared/data";
 
 import { IPlanRegion, ITravelPlan } from "../types";
@@ -23,6 +19,5 @@ export const updatePlanAction = (
   updateFakePlanById(id, { ...updateData, title });
   getPlanById(id) as ITravelPlan;
 
-  revalidatePath("/plan");
   return { success: true };
 };

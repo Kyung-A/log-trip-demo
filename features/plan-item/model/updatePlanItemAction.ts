@@ -1,5 +1,3 @@
-"use server";
-
 import { getPlanItemById, updateFakePlanItemById } from "@/shared/data";
 
 import { IUpdatePlanItemInput } from "..";

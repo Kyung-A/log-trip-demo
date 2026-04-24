@@ -8,7 +8,6 @@ import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
 import { IRegion } from "@/features/region";
-
 import { blobUrlToBase64 } from "@/shared";
 
 import { ContentEditor } from "./ContentEditor";
@@ -167,7 +166,7 @@ export const DiaryForm = ({
       }
 
       startTransition(async () => {
-        await createDiaryAction(body as IDiary);
+        createDiaryAction(body as IDiary);
         router.push("/diary");
       });
     },

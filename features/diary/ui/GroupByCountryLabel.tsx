@@ -2,7 +2,8 @@
 
 import React, { useMemo } from "react";
 
-import { groupByCountry, IDiaryRegionsRender } from "@/entities/diary";
+import { groupByCountry } from "../model";
+import { IDiaryRegionsRender } from "../types";
 
 export const GroupByCountryLabel = React.memo(
   ({ regions }: { regions: IDiaryRegionsRender[] }) => {
