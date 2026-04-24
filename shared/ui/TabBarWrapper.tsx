@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 
 import { TabBar } from "./TabBar";
 
-const HIDE_TABBAR_PATHS = ["/login"];
+const HIDE_TABBAR_PATHS = ["/login", "/plan/new", "/diary/new"];
 
 export function TabBarWrapper() {
   const pathname = usePathname();

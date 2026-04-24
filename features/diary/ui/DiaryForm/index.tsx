@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
 
 import { IRegion } from "@/features/region";
+import { useUser } from "@/features/user";
 import { blobUrlToBase64 } from "@/shared";
 import { DEMO_USER_ID } from "@/shared/data";
 
@@ -17,8 +18,6 @@ import { DrawingCanvasDialog } from "./DrawingCanvasDialog";
 import { DrawingModeToggle } from "./DrawingModeToggle";
 import { ImageEditDialog } from "./ImageEditDialog";
 import { UploadDiaryImageField } from "./UploadDiaryImageField";
-import { useUser } from "@/features/user";
-
 import { CitySelectField, IDiary, useDiary } from "../..";
 
 const DEFAULT_FORM_VALUES: Partial<IDiary> = {

@@ -42,9 +42,10 @@ export const PlanEditDialog = ({
   const { watch, setValue, handleSubmit, formState, reset } =
     useForm<EditFormValues>({
       defaultValues: {
-        cities: regions?.filter((r) =>
-          plan.region_names.some((rn) => rn.region_name === r.region_name),
-        ) ?? [],
+        cities:
+          regions?.filter((r) =>
+            plan.region_names.some((rn) => rn.region_name === r.region_name),
+          ) ?? [],
         dateRange: {
           start: new Date(plan.start_date),
           end: new Date(plan.end_date),
@@ -58,9 +59,10 @@ export const PlanEditDialog = ({
   useEffect(() => {
     if (isOpen) {
       reset({
-        cities: regions?.filter((r) =>
-          plan.region_names.some((rn) => rn.region_name === r.region_name),
-        ) ?? [],
+        cities:
+          regions?.filter((r) =>
+            plan.region_names.some((rn) => rn.region_name === r.region_name),
+          ) ?? [],
         dateRange: {
           start: new Date(plan.start_date),
           end: new Date(plan.end_date),
@@ -136,7 +138,7 @@ export const PlanEditDialog = ({
           )}
         </div>
 
-        <div className="px-4 pb-14 pt-3 flex gap-x-2 shrink-0 border-t border-zinc-100">
+        <div className="px-4 pb-16 pt-3 flex gap-x-2 shrink-0 border-t border-zinc-100">
           {editStep === 1 ? (
             <button
               type="button"

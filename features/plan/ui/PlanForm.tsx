@@ -109,7 +109,7 @@ export const PlanForm = ({ regions }: { regions: IRegion[] | null }) => {
         )}
       </main>
 
-      <footer className="bg-white max-w-3xl pt-4 pb-14 w-full border-t border-zinc-200 px-4 fixed bottom-14">
+      <footer className="bg-white max-w-3xl pt-4 pb-16 w-full border-t border-zinc-200 px-4 fixed bottom-0">
         {step === 1 ? (
           <button
             type="button"

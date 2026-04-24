@@ -27,7 +27,7 @@ export default function EmailLoginPage() {
   };
 
   return (
-    <div className="flex-1 px-6 py-10 bg-white flex flex-col gap-y-6">
+    <div className="flex-1 px-6 pb-10 pt-40 bg-white flex flex-col gap-y-6">
       <form onSubmit={handleSubmit} className="flex flex-col gap-y-6">
         <div>
           <label className="block text-base font-semibold mb-1.5">이메일</label>
