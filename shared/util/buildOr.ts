@@ -1,4 +1,4 @@
-import { ICountry } from "@/entities/region";
+import { ICountry } from "@/features/region";
 
 export const buildOr = (batch: ICountry[] | null, opts = { loose: true }) => {
   const groups: string[] = [];

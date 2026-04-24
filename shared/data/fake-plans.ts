@@ -1,4 +1,5 @@
-import { IPlanItem, ITravelPlan } from "@/entities/plan";
+import { ITravelPlan } from "@/features/plan";
+import { IPlanItem } from "@/features/plan-item";
 
 import { DEMO_USER_ID } from "./fake-user";
 
@@ -161,5 +162,44 @@ export const fakePlanItems: IPlanItem[] = [
 export const getPlanById = (id: string) =>
   fakePlans.find((p) => p.id === id) ?? null;
 
+export const getPlanItemById = (id: string) =>
+  fakePlanItems.find((item) => item.id === id) ?? null;
+
 export const getPlanItemsByPlanId = (planId: string) =>
   fakePlanItems.filter((item) => item.plan_id === planId);
+
+export const addFakePlan = (plan: ITravelPlan) => {
+  fakePlans.push(plan);
+};
+
+export const removeFakePlan = (id: string) => {
+  const idx = fakePlans.findIndex((p) => p.id === id);
+  if (idx !== -1) fakePlans.splice(idx, 1);
+  fakePlanItems.splice(
+    0,
+    fakePlanItems.length,
+    ...fakePlanItems.filter((item) => item.plan_id !== id),
+  );
+};
+
+export const updateFakePlanById = (id: string, input: Partial<ITravelPlan>) => {
+  const plan = fakePlans.find((p) => p.id === id);
+  if (plan) Object.assign(plan, input);
+};
+
+export const addFakePlanItem = (item: IPlanItem) => {
+  fakePlanItems.push(item);
+};
+
+export const removeFakePlanItem = (id: string) => {
+  const idx = fakePlanItems.findIndex((item) => item.id === id);
+  if (idx !== -1) fakePlanItems.splice(idx, 1);
+};
+
+export const updateFakePlanItemById = (
+  id: string,
+  input: Partial<IPlanItem>,
+) => {
+  const item = fakePlanItems.find((i) => i.id === id);
+  if (item) Object.assign(item, input);
+};

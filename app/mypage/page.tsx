@@ -1,21 +1,16 @@
-import { getDiaryCounter, getUserProfile } from "@/entities/user";
+import { UserProfileWidget, AccountSettings } from "@/features/user";
 
-import { DEMO_USER_ID } from "@/shared/data/fake-user";
-
-import { AuthLayout } from "@/widgets/auth";
-import { AccountSettings, UserProfileWidget } from "@/widgets/user-profile";
+import { fakeDiaryCounters, fakeUser } from "@/shared/data/fake-user";
 
 export default async function MyPage() {
-  const { data: profile } = await getUserProfile(DEMO_USER_ID);
-  const { data: counters } = await getDiaryCounter(DEMO_USER_ID);
+  const profile = fakeUser;
+  const counters = fakeDiaryCounters;
 
   if (!profile && !counters) return null;
 
   return (
-    <AuthLayout>
-      <UserProfileWidget isMine profile={profile!} counters={counters!}>
-        <AccountSettings />
-      </UserProfileWidget>
-    </AuthLayout>
+    <UserProfileWidget isMine profile={profile!} counters={counters!}>
+      <AccountSettings />
+    </UserProfileWidget>
   );
 }

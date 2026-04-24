@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { useRouter } from "next/navigation";
 
-import { loginAction } from "@/shared/lib/demoAuth";
+import { DEMO_EMAIL, DEMO_PASSWORD } from "@/shared/data";
 
 export default function EmailLoginPage() {
   const router = useRouter();
@@ -17,14 +17,11 @@ export default function EmailLoginPage() {
     e.preventDefault();
     setError(null);
     setIsPending(true);
-    try {
-      const result = await loginAction(email, password);
-      if (result?.error) {
-        setError(result.error);
-      }
-    } catch {
-      // redirect가 throw되는 경우 — 정상 동작
-    } finally {
+
+    if (email === DEMO_EMAIL && password === DEMO_PASSWORD) {
+      router.push("/world-map");
+    } else {
+      setError("이메일 또는 비밀번호가 올바르지 않습니다.");
       setIsPending(false);
     }
   };

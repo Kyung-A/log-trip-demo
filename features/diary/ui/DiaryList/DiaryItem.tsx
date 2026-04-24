@@ -1,0 +1,92 @@
+"use client";
+
+import { useState } from "react";
+
+import { Ban } from "lucide-react";
+
+import { useClickOutside } from "@/shared";
+
+import { DiaryImageSlider } from "./DiaryImageSlider";
+import { DiaryItemContent } from "./DiaryItemContent";
+import { DiaryItemHeader } from "./DiaryItemHeader";
+import { DiaryPopoverMenu } from "./DiaryPopoverMenu";
+import { IDiary } from "../../types";
+
+interface IDiaryItem {
+  item: IDiary;
+  handleReportDiary: (id: string, userId: string) => void;
+  handleDeleteDiary: (item: IDiary) => void;
+  handleIsPublicDiaryChange: (
+    id: string,
+    state: boolean,
+    userId?: string,
+  ) => void;
+  isNotFeed: boolean;
+  isPending: boolean;
+}
+
+export const DiaryItem = ({
+  item,
+  handleReportDiary,
+  handleDeleteDiary,
+  handleIsPublicDiaryChange,
+  isNotFeed,
+  isPending,
+}: IDiaryItem) => {
+  const [openId, setOpenId] = useState<string | null>(null);
+  const popoverRef = useClickOutside<HTMLDivElement>(() => {
+    setOpenId(null);
+  });
+
+  const onToggle = () => {
+    setOpenId((prev) => (prev === item.id ? null : item.id) as string | null);
+  };
+
+  return (
+    <li>
+      {item.is_report && isNotFeed ? (
+        <article className="w-full h-20 bg-zinc-200 mb-2">
+          <div className="w-full flex h-full items-center justify-center gap-x-2 text-zinc-500">
+            <Ban size={16} />
+            신고 처리된 게시물입니다.
+          </div>
+        </article>
+      ) : (
+        <article className="w-full h-auto mb-2 bg-white relative">
+          <DiaryItemHeader
+            item={item}
+            onToggle={onToggle}
+            isNotFeed={isNotFeed}
+            handleIsPublicDiaryChange={handleIsPublicDiaryChange}
+            isPending={isPending}
+          />
+
+          {item.diary_images && item.diary_images.length > 0 && (
+            <div className="mb-3">
+              <DiaryImageSlider images={item.diary_images} />
+            </div>
+          )}
+
+          <DiaryItemContent
+            isDrawing={item.is_drawing}
+            title={item.title}
+            date={item.travel_date}
+            textContent={item.text_content}
+            drawingContent={item.drawing_content}
+            regions={item.diary_regions}
+          />
+
+          {openId === item.id && (
+            <DiaryPopoverMenu
+              onReport={() => handleReportDiary(item.id!, item.user_id!)}
+              onDelete={() => handleDeleteDiary(item)}
+              ref={popoverRef}
+              isNotFeed={isNotFeed}
+              isPending={isPending}
+            />
+          )}
+        </article>
+      )}
+    </li>
+  );
+};

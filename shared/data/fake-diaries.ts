@@ -1,4 +1,5 @@
-import { IDiary } from "@/entities/diary";
+import { IDiary } from "@/features/diary";
+
 import { DEMO_USER_ID } from "./fake-user";
 
 const demoUserInfo = {
@@ -174,3 +175,22 @@ export const fakeDiaries: IDiary[] = [
 
 export const getPublicFakeDiaries = () =>
   fakeDiaries.filter((d) => d.is_public && !d.is_report);
+
+export const addFakeDiary = (diary: IDiary) => {
+  fakeDiaries.push(diary);
+};
+
+export const removeFakeDiary = (id: string) => {
+  const idx = fakeDiaries.findIndex((d) => d.id === id);
+  if (idx !== -1) fakeDiaries.splice(idx, 1);
+};
+
+export const updateFakeDiaryPublic = (id: string, isPublic: boolean) => {
+  const diary = fakeDiaries.find((d) => d.id === id);
+  if (diary) diary.is_public = isPublic;
+};
+
+export const updateFakeDiaryReport = (id: string) => {
+  const diary = fakeDiaries.find((d) => d.id === id);
+  if (diary) diary.is_report = true;
+};

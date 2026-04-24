@@ -1,11 +1,14 @@
 import Link from "next/link";
 
-import { getDiaries, getPublicDiaries } from "@/entities/diary";
+import {
+  DiaryList,
+  getDiariesAction,
+  getPublicDiariesAction,
+} from "@/features/diary";
 
-import { DEMO_USER_ID } from "@/shared/data/fake-user";
+import { DEMO_USER_ID } from "@/shared/data";
 
 import { EmptyView } from "@/shared";
-import { DiaryList } from "@/widgets/diary-list";
 
 interface IDiaryProps {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -17,8 +20,8 @@ export default async function Diary({ searchParams }: IDiaryProps) {
 
   const data =
     currentTab === "diary"
-      ? await getDiaries(DEMO_USER_ID, 1, 10)
-      : await getPublicDiaries(1, 10);
+      ? getDiariesAction(DEMO_USER_ID, 1, 10)
+      : getPublicDiariesAction(1, 10);
 
   if (data.length === 0) {
     return (

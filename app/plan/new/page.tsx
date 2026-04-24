@@ -1,15 +1,8 @@
-import { getRegions } from "@/entities/region";
-
-import { PlanForm } from "@/features/plan-create";
-
-import { AuthLayout } from "@/widgets/auth";
+import { PlanForm } from "@/features/plan";
+import { getRegions } from "@/features/region";
 
 export default async function NewPlan() {
   const regions = await getRegions();
 
-  return (
-    <AuthLayout>
-      <PlanForm regions={regions} />
-    </AuthLayout>
-  );
+  return <PlanForm regions={regions} />;
 }

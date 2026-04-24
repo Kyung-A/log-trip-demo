@@ -1,16 +1,11 @@
-import { fakeUser, fakeDiaryCounters } from "@/shared/data/fake-user";
+import { UserProfileWidget } from "@/features/user";
 
-import { AuthLayout } from "@/widgets/auth";
-import { UserProfileWidget } from "@/widgets/user-profile";
+import { fakeUser, fakeDiaryCounters } from "@/shared/data/fake-user";
 
 export default async function UserProfile({
   params,
 }: {
   params: { id: string };
 }) {
-  return (
-    <AuthLayout>
-      <UserProfileWidget profile={fakeUser} counters={fakeDiaryCounters} />;
-    </AuthLayout>
-  );
+  return <UserProfileWidget profile={fakeUser} counters={fakeDiaryCounters} />;
 }

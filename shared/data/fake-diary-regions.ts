@@ -1,4 +1,5 @@
-import { IDiaryRegions } from "@/entities/diary";
+import { IDiaryRegions } from "@/features/diary";
+
 import { DEMO_USER_ID } from "./fake-user";
 
 export const fakeDiaryRegions: IDiaryRegions[] = [

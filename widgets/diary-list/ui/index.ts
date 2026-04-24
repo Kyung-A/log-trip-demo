@@ -1,1 +1,0 @@
-export { DiaryList } from "./DiaryList";

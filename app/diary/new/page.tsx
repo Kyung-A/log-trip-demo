@@ -1,17 +1,10 @@
-import { getRegions } from "@/entities/region";
+import { DiaryForm } from "@/features/diary";
+import { getRegions } from "@/features/region";
 
-import { DiaryForm } from "@/features/diary-create";
-
-import { DEMO_USER_ID } from "@/shared/data/fake-user";
-
-import { AuthLayout } from "@/widgets/auth";
+import { DEMO_USER_ID } from "@/shared/data";
 
 export default async function CreateDiary() {
   const regions = await getRegions();
 
-  return (
-    <AuthLayout>
-      <DiaryForm userId={DEMO_USER_ID} regions={regions} />
-    </AuthLayout>
-  );
+  return <DiaryForm userId={DEMO_USER_ID} regions={regions} />;
 }

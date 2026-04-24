@@ -1,17 +1,9 @@
-import { getUserProfile } from "@/entities/user";
+import { UserProfileForm } from "@/features/user";
 
-import { UserProfileForm } from "@/features/user-profile-update";
-
-import { DEMO_USER_ID } from "@/shared/data/fake-user";
-
-import { AuthLayout } from "@/widgets/auth";
+import { DEMO_USER_ID, fakeUser } from "@/shared/data/fake-user";
 
 export default async function ProfileUpdate() {
-  const { data: profile } = await getUserProfile(DEMO_USER_ID);
+  const profile = fakeUser;
 
-  return (
-    <AuthLayout>
-      <UserProfileForm profile={profile!} userId={DEMO_USER_ID} />;
-    </AuthLayout>
-  );
+  return <UserProfileForm profile={profile!} userId={DEMO_USER_ID} />;
 }

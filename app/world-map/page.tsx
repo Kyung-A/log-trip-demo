@@ -1,21 +1,21 @@
-import { getDiaryRegions } from "@/entities/diary";
 import {
-  getGeoJson,
-  getRegions,
   ICountry,
+  IRegion,
+  getRegions,
   IGeoJson,
   IOptionsParams,
-  IRegion,
-} from "@/entities/region";
+  getGeoJson,
+} from "@/features/region";
+import { WorldMap } from "@/features/world-map";
 
+import { fakeDiaryRegions } from "@/shared/data";
+import { COUNTRY_COLORS } from "@/shared/data/countryColors";
 import { DEMO_USER_ID } from "@/shared/data/fake-user";
 
-import { buildOr, COUNTRY_COLORS } from "@/shared";
-import { AuthLayout } from "@/widgets/auth";
-import { WorldMap } from "@/widgets/world-map";
+import { buildOr } from "@/shared";
 
 export default async function WorldMapPage() {
-  const diaryRegions = await getDiaryRegions(DEMO_USER_ID);
+  const diaryRegions = fakeDiaryRegions;
 
   const uniqueByCountry: ICountry[] = diaryRegions
     ? Array.from(
@@ -70,9 +70,5 @@ export default async function WorldMapPage() {
   };
 
   const finalGeoJson = await getFullGeoJsonData();
-  return (
-    <AuthLayout>
-      <WorldMap geoJson={finalGeoJson} userId={DEMO_USER_ID} />;
-    </AuthLayout>
-  );
+  return <WorldMap geoJson={finalGeoJson} userId={DEMO_USER_ID} />;
 }

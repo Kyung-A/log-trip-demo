@@ -1,1 +1,0 @@
-export { PlanDetailClient } from "./ui";
