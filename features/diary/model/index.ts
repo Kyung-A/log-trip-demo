@@ -1,2 +1,2 @@
 export * from "./groupByCountry";
-export { useDiary } from "./DiaryContext";
+export { useDiary, DiaryProvider } from "./DiaryContext";

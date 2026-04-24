@@ -9,9 +9,9 @@ export const fakePlans: ITravelPlan[] = [
     user_id: DEMO_USER_ID,
     title: "봄 도쿄 여행",
     region_names: [{ id: "r1", region_name: "도쿄" }],
-    start_date: "2025-03-25",
-    end_date: "2025-03-30",
-    created_at: "2025-01-10T00:00:00.000Z",
+    start_date: "2026-03-25",
+    end_date: "2026-03-30",
+    created_at: "2026-01-10T00:00:00.000Z",
   },
   {
     id: "plan-002",
@@ -22,9 +22,9 @@ export const fakePlans: ITravelPlan[] = [
       { id: "r3", region_name: "밀라노" },
       { id: "r4", region_name: "마드리드" },
     ],
-    start_date: "2025-06-10",
-    end_date: "2025-06-25",
-    created_at: "2025-02-20T00:00:00.000Z",
+    start_date: "2026-04-24",
+    end_date: "2026-05-01",
+    created_at: "2026-02-20T00:00:00.000Z",
   },
   {
     id: "plan-003",
@@ -34,9 +34,9 @@ export const fakePlans: ITravelPlan[] = [
       { id: "r5", region_name: "방콕" },
       { id: "r6", region_name: "치앙마이" },
     ],
-    start_date: "2025-08-20",
-    end_date: "2025-08-28",
-    created_at: "2025-05-01T00:00:00.000Z",
+    start_date: "2026-08-20",
+    end_date: "2026-08-28",
+    created_at: "2026-05-01T00:00:00.000Z",
   },
   {
     id: "plan-004",
@@ -47,9 +47,9 @@ export const fakePlans: ITravelPlan[] = [
       { id: "r8", region_name: "오사카" },
       { id: "r9", region_name: "나라" },
     ],
-    start_date: "2025-11-05",
-    end_date: "2025-11-12",
-    created_at: "2025-07-15T00:00:00.000Z",
+    start_date: "2026-11-05",
+    end_date: "2026-11-12",
+    created_at: "2026-07-15T00:00:00.000Z",
   },
 ];
 
@@ -63,7 +63,7 @@ export const fakePlanItems: IPlanItem[] = [
     place: "하네다 공항",
     time: "14:00",
     memo: "도쿄 모노레일 이용",
-    created_at: "2025-01-10T01:00:00.000Z",
+    created_at: "2026-01-10T01:00:00.000Z",
   },
   {
     id: "item-002",
@@ -73,7 +73,7 @@ export const fakePlanItems: IPlanItem[] = [
     place: "시부야",
     time: "18:00",
     memo: null,
-    created_at: "2025-01-10T02:00:00.000Z",
+    created_at: "2026-01-10T02:00:00.000Z",
   },
   {
     id: "item-003",
@@ -83,7 +83,7 @@ export const fakePlanItems: IPlanItem[] = [
     place: "우에노 공원",
     time: "10:00",
     memo: "도시락 준비해서 피크닉",
-    created_at: "2025-01-10T03:00:00.000Z",
+    created_at: "2026-01-10T03:00:00.000Z",
   },
   {
     id: "item-004",
@@ -93,7 +93,7 @@ export const fakePlanItems: IPlanItem[] = [
     place: "아사쿠사",
     time: "14:00",
     memo: null,
-    created_at: "2025-01-10T04:00:00.000Z",
+    created_at: "2026-01-10T04:00:00.000Z",
   },
   {
     id: "item-005",
@@ -103,7 +103,7 @@ export const fakePlanItems: IPlanItem[] = [
     place: "하라주쿠",
     time: "11:00",
     memo: null,
-    created_at: "2025-01-10T05:00:00.000Z",
+    created_at: "2026-01-10T05:00:00.000Z",
   },
   // plan-002: 유럽 배낭여행
   {
@@ -114,7 +114,7 @@ export const fakePlanItems: IPlanItem[] = [
     place: "에펠탑",
     time: "20:00",
     memo: "사전 예매 필수",
-    created_at: "2025-02-20T01:00:00.000Z",
+    created_at: "2026-02-20T01:00:00.000Z",
   },
   {
     id: "item-007",
@@ -124,7 +124,7 @@ export const fakePlanItems: IPlanItem[] = [
     place: "루브르 박물관",
     time: "09:00",
     memo: "오디오 가이드 대여",
-    created_at: "2025-02-20T02:00:00.000Z",
+    created_at: "2026-02-20T02:00:00.000Z",
   },
   {
     id: "item-008",
@@ -134,7 +134,7 @@ export const fakePlanItems: IPlanItem[] = [
     place: "밀라노 두오모",
     time: "10:00",
     memo: "옥상 투어 예약",
-    created_at: "2025-02-20T03:00:00.000Z",
+    created_at: "2026-02-20T03:00:00.000Z",
   },
   // plan-003: 동남아 휴양
   {
@@ -145,7 +145,7 @@ export const fakePlanItems: IPlanItem[] = [
     place: "왓 포",
     time: "15:00",
     memo: null,
-    created_at: "2025-05-01T01:00:00.000Z",
+    created_at: "2026-05-01T01:00:00.000Z",
   },
   {
     id: "item-010",
@@ -155,51 +155,6 @@ export const fakePlanItems: IPlanItem[] = [
     place: "카오산 로드",
     time: "19:00",
     memo: "팟타이, 망고 스무디 필수",
-    created_at: "2025-05-01T02:00:00.000Z",
+    created_at: "2026-05-01T02:00:00.000Z",
   },
 ];
-
-export const getPlanById = (id: string) =>
-  fakePlans.find((p) => p.id === id) ?? null;
-
-export const getPlanItemById = (id: string) =>
-  fakePlanItems.find((item) => item.id === id) ?? null;
-
-export const getPlanItemsByPlanId = (planId: string) =>
-  fakePlanItems.filter((item) => item.plan_id === planId);
-
-export const addFakePlan = (plan: ITravelPlan) => {
-  fakePlans.push(plan);
-};
-
-export const removeFakePlan = (id: string) => {
-  const idx = fakePlans.findIndex((p) => p.id === id);
-  if (idx !== -1) fakePlans.splice(idx, 1);
-  fakePlanItems.splice(
-    0,
-    fakePlanItems.length,
-    ...fakePlanItems.filter((item) => item.plan_id !== id),
-  );
-};
-
-export const updateFakePlanById = (id: string, input: Partial<ITravelPlan>) => {
-  const plan = fakePlans.find((p) => p.id === id);
-  if (plan) Object.assign(plan, input);
-};
-
-export const addFakePlanItem = (item: IPlanItem) => {
-  fakePlanItems.push(item);
-};
-
-export const removeFakePlanItem = (id: string) => {
-  const idx = fakePlanItems.findIndex((item) => item.id === id);
-  if (idx !== -1) fakePlanItems.splice(idx, 1);
-};
-
-export const updateFakePlanItemById = (
-  id: string,
-  input: Partial<IPlanItem>,
-) => {
-  const item = fakePlanItems.find((i) => i.id === id);
-  if (item) Object.assign(item, input);
-};

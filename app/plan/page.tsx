@@ -1,13 +1,11 @@
+"use client";
+
+import { useState } from "react"; // useState 추가
+
 import dayjs from "dayjs";
-import Link from "next/link";
 
-import { ITravelPlan, PlanList } from "@/features/plan";
-
-import { fakePlans } from "@/shared/data";
-
-interface PlanPageProps {
-  searchParams: Promise<{ tab?: string }>;
-}
+import { PlanList, usePlan } from "@/features/plan";
+import { ITravelPlan } from "@/features/plan";
 
 type TabType = "all" | "ing" | "early" | "end";
 
@@ -30,11 +28,10 @@ const filterPlans = (plans: ITravelPlan[], tab: TabType) => {
   });
 };
 
-export default async function PlanPage({ searchParams }: PlanPageProps) {
-  const { tab } = await searchParams;
-  const currentTab = (tab as "all" | "ing" | "early" | "end") ?? "all";
+export default function PlanPage() {
+  const { plans } = usePlan();
+  const [currentTab, setCurrentTab] = useState<TabType>("all");
 
-  const plans = fakePlans;
   const filtered = filterPlans(plans, currentTab);
 
   return (
@@ -44,18 +41,17 @@ export default async function PlanPage({ searchParams }: PlanPageProps) {
 
         <nav className="flex mt-2 items-center gap-x-2 flex-nowrap overflow-x-auto">
           {(Object.keys(TAB_LABELS) as TabType[]).map((tab) => (
-            <Link
+            <button
               key={tab}
-              href={`?tab=${tab}`}
-              className={`px-4 rounded-full py-0.5 text-base cursor-pointer border shrink-0 ${
+              onClick={() => setCurrentTab(tab)}
+              className={`px-4 rounded-full py-0.5 text-base cursor-pointer border shrink-0 transition-colors ${
                 currentTab === tab
                   ? "bg-[#e9dcd9] border-[#e9dcd9] text-latte font-semibold"
-                  : "text-zinc-500 border-zinc-300"
+                  : "text-zinc-500 border-zinc-300 hover:border-zinc-400"
               }`}
-              scroll={false}
             >
               {TAB_LABELS[tab]}
-            </Link>
+            </button>
           ))}
         </nav>
       </header>

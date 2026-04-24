@@ -20,7 +20,7 @@ export const CitySelectList = ({
   const [search, setSearch] = useState("");
 
   const handleToggle = (item: IRegion) => {
-    const isSelected = value.some((v) => v.region_code === item.region_code);
+    const isSelected = value.some((v) => v.region_name === item.region_code);
     const next = isSelected
       ? value.filter((v) => v.region_code !== item.region_code)
       : [...value, item];
@@ -63,7 +63,7 @@ export const CitySelectList = ({
       <main className="overflow-y-scroll h-screen">
         {filteredList?.map((item) => {
           const selected = value.some(
-            (v) => v.region_code === item.region_code,
+            (v) => v.region_name === item.region_name,
           );
           return (
             <label

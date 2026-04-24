@@ -6,12 +6,14 @@ import dayjs from "dayjs";
 import { ChevronLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
+import { v4 as uuidv4 } from "uuid";
 
 import { IRegion } from "@/features/region";
+import { DEMO_USER_ID } from "@/shared/data";
 
 import { CitySelectList } from "./CitySelectList";
 import { PlanStep2 } from "./PlanStep2";
-import { createPlanAction } from "../model";
+import { usePlan } from "../model";
 
 interface DateRange {
   start: Date | null;
@@ -26,6 +28,7 @@ interface PlanFormValues {
 export const PlanForm = ({ regions }: { regions: IRegion[] | null }) => {
   const router = useRouter();
   const [step, setStep] = useState<1 | 2>(1);
+  const { setPlans } = usePlan();
 
   const { watch, setValue, handleSubmit, formState, control } =
     useForm<PlanFormValues>({
@@ -41,18 +44,24 @@ export const PlanForm = ({ regions }: { regions: IRegion[] | null }) => {
   const onSubmit = async (data: PlanFormValues) => {
     if (!data.dateRange.start || !data.dateRange.end) return;
 
-    const result = await createPlanAction({
-      region_names: data.cities.map((c) => ({
-        id: c.id,
-        region_name: c.region_name,
-      })),
+    const regions = data.cities.map((c) => ({
+      id: c.id,
+      region_name: c.region_name,
+    }));
+    const id = uuidv4();
+
+    const body = {
+      region_names: regions,
       start_date: dayjs(data.dateRange.start).format("YYYY-MM-DD"),
       end_date: dayjs(data.dateRange.end).format("YYYY-MM-DD"),
-    });
+      title: regions.map((r) => r.region_name).join(", ") + " 여행",
+      id,
+      user_id: DEMO_USER_ID,
+      created_at: new Date().toISOString(),
+    };
 
-    if (result.success && result.id) {
-      router.push(`/plan/${result.id}`);
-    }
+    setPlans((prev) => [body, ...prev]);
+    router.push(`/plan/${id}`);
   };
 
   return (

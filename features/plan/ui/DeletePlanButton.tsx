@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 
-import { deletePlanAction } from "../model";
+import { usePlan } from "../model";
 
 interface DeletePlanButtonProps {
   planId: string;
@@ -18,11 +18,12 @@ export const DeletePlanButton = ({
   children = "삭제",
 }: DeletePlanButtonProps) => {
   const router = useRouter();
+  const { setPlans } = usePlan();
 
   const handleDelete = async () => {
     if (!window.confirm("정말 삭제하시겠습니까?")) return;
 
-    await deletePlanAction(planId);
+    setPlans((prev) => prev.filter((p) => p.id !== planId));
 
     if (redirectTo) {
       router.push(redirectTo);

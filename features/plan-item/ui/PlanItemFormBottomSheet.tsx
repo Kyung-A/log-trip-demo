@@ -3,11 +3,12 @@
 import { useEffect } from "react";
 
 import { useForm } from "react-hook-form";
+import { v4 as uuidv4 } from "uuid";
 
+import { usePlan } from "@/features/plan";
 import { FormBottomSheet } from "@/shared/ui";
 
 import { IPlanItem } from "..";
-import { createPlanItemAction } from "../model";
 
 interface PlanItemFormValues {
   title: string;
@@ -23,10 +24,7 @@ interface PlanItemFormBottomSheetProps {
   dayNumber: number;
   defaultValues?: IPlanItem;
   onSuccess?: () => void;
-  onSubmitAction?: (values: PlanItemFormValues) => {
-    success: boolean;
-    error?: string;
-  };
+  onSubmitAction?: (values: PlanItemFormValues) => void;
 }
 
 export const PlanItemFormBottomSheet = ({
@@ -39,6 +37,7 @@ export const PlanItemFormBottomSheet = ({
   onSubmitAction,
 }: PlanItemFormBottomSheetProps) => {
   const isEdit = !!defaultValues;
+  const { setPlanItems } = usePlan();
 
   const {
     register,
@@ -69,17 +68,21 @@ export const PlanItemFormBottomSheet = ({
     const action =
       onSubmitAction ??
       ((values: PlanItemFormValues) =>
-        createPlanItemAction({
-          plan_id: planId,
-          day_number: dayNumber,
-          title: values.title,
-          time: values.time,
-          place: values.place || null,
-          memo: values.memo || null,
-        }));
+        setPlanItems((prev) => [
+          {
+            id: uuidv4(),
+            plan_id: planId,
+            day_number: dayNumber,
+            title: values.title,
+            time: values.time,
+            place: values.place || null,
+            memo: values.memo || null,
+            created_at: new Date().toISOString(),
+          },
+          ...prev,
+        ]));
 
-    const result = await action(data);
-    if (!result.success) return;
+    action(data);
 
     setIsOpen(false);
     onSuccess?.();

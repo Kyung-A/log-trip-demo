@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 
 import dayjs from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
@@ -16,30 +16,23 @@ import {
 import { useRouter } from "next/navigation";
 import Calendar from "react-calendar";
 
-import {
-  deletePlanItemAction,
-  updatePlanItemAction,
-} from "@/features/plan-item/model";
+import { IPlanItem } from "@/features/plan-item";
 import { PlanItemFormBottomSheet } from "@/features/plan-item/ui";
 import { IRegion } from "@/features/region";
 
-import { ITravelPlan, IPlanItem } from "../types";
+import { ITravelPlan } from "../types";
 import { DeletePlanButton } from "./DeletePlanButton";
 import { PlanEditDialog } from "./PlanEditDialog";
+import { usePlan } from "../model";
 
 dayjs.extend(isBetween);
 
 interface PlanDetailClientProps {
   plan: ITravelPlan;
-  initialItems: IPlanItem[];
-  regions: IRegion[];
+  regions: IRegion[] | null;
 }
 
-export const PlanDetailClient = ({
-  plan,
-  initialItems,
-  regions,
-}: PlanDetailClientProps) => {
+export const PlanDetailClient = ({ plan, regions }: PlanDetailClientProps) => {
   const router = useRouter();
   const startDate = dayjs(plan.start_date);
   const endDate = dayjs(plan.end_date);
@@ -51,12 +44,13 @@ export const PlanDetailClient = ({
   const [openDays, setOpenDays] = useState<Record<number, boolean>>({
     1: true,
   });
-  const [items, setItems] = useState<IPlanItem[]>(initialItems);
 
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setItems(initialItems);
-  }, [initialItems]);
+  const { planItems, setPlanItems } = usePlan();
+
+  const planItem = useMemo(
+    () => planItems.filter((p) => p.plan_id === plan.id),
+    [plan.id, planItems],
+  );
 
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [addTarget, setAddTarget] = useState<number | null>(null);
@@ -78,16 +72,14 @@ export const PlanDetailClient = ({
   };
 
   const getItemsForDay = (day: number) =>
-    items
+    planItem
       .filter((item) => item.day_number === day)
       .sort((a, b) => a.time.localeCompare(b.time));
 
   const handleDeleteItem = async (item: IPlanItem) => {
     if (!window.confirm("정말 삭제하시겠습니까?")) return;
-    const result = await deletePlanItemAction(item.id, plan.id);
-    if (result.success) {
-      setItems((prev) => prev.filter((i) => i.id !== item.id));
-    }
+
+    setPlanItems((prev) => prev.filter((v) => v.id !== item.id));
   };
 
   const formatTime = (time: string) => {
@@ -282,12 +274,19 @@ export const PlanDetailClient = ({
           dayNumber={editItem.day_number}
           defaultValues={editItem}
           onSubmitAction={(values) =>
-            updatePlanItemAction(editItem.id, plan.id, {
-              title: values.title,
-              time: values.time,
-              place: values.place || null,
-              memo: values.memo || null,
-            })
+            setPlanItems((prev) =>
+              prev.map((p) =>
+                p.plan_id === plan.id && p.id === editItem.id
+                  ? {
+                      ...p,
+                      title: values.title,
+                      time: values.time,
+                      place: values.place || null,
+                      memo: values.memo || null,
+                    }
+                  : p,
+              ),
+            )
           }
           onSuccess={() => router.refresh()}
         />

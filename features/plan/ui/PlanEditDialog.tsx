@@ -1,15 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import dayjs from "dayjs";
 import { ChevronLeft } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
 import { IRegion } from "@/features/region";
 
-import { updatePlanAction } from "../model";
+import { usePlan } from "../model";
 import { ITravelPlan } from "../types";
 import { CitySelectList } from "./CitySelectList";
 import { PlanStep2 } from "./PlanStep2";
@@ -28,7 +27,7 @@ interface PlanEditDialogProps {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   plan: ITravelPlan;
-  regions: IRegion[];
+  regions: IRegion[] | null;
 }
 
 export const PlanEditDialog = ({
@@ -37,15 +36,15 @@ export const PlanEditDialog = ({
   plan,
   regions,
 }: PlanEditDialogProps) => {
-  const router = useRouter();
   const [editStep, setEditStep] = useState<1 | 2>(1);
+  const { setPlans } = usePlan();
 
   const { watch, setValue, handleSubmit, formState, reset } =
     useForm<EditFormValues>({
       defaultValues: {
-        cities: regions.filter((r) =>
-          plan.region_names.some((rn) => rn.id === r.id),
-        ),
+        cities: regions?.filter((r) =>
+          plan.region_names.some((rn) => rn.region_name === r.region_name),
+        ) ?? [],
         dateRange: {
           start: new Date(plan.start_date),
           end: new Date(plan.end_date),
@@ -56,28 +55,48 @@ export const PlanEditDialog = ({
   const cities = watch("cities");
   const dateRange = watch("dateRange");
 
+  useEffect(() => {
+    if (isOpen) {
+      reset({
+        cities: regions?.filter((r) =>
+          plan.region_names.some((rn) => rn.region_name === r.region_name),
+        ) ?? [],
+        dateRange: {
+          start: new Date(plan.start_date),
+          end: new Date(plan.end_date),
+        },
+      });
+      setEditStep(1);
+    }
+  }, [isOpen]);
+
   const handleClose = () => {
     setIsOpen(false);
-    setEditStep(1);
-    reset();
   };
 
   const onSubmit = async (data: EditFormValues) => {
     if (!data.dateRange.start || !data.dateRange.end) return;
 
-    const result = await updatePlanAction({
-      id: plan.id,
-      region_names: data.cities.map((c) => ({
-        id: c.id,
-        region_name: c.region_name,
-      })),
-      start_date: dayjs(data.dateRange.start).format("YYYY-MM-DD"),
-      end_date: dayjs(data.dateRange.end).format("YYYY-MM-DD"),
-    });
+    const regionNames = data.cities.map((c) => ({
+      id: c.id,
+      region_name: c.region_name,
+    }));
 
-    if (!result.success) return;
+    setPlans((prev) =>
+      prev.map((p) =>
+        p.id === plan.id
+          ? {
+              ...p,
+              title: regionNames.map((r) => r.region_name).join(", ") + " 여행",
+              region_names: regionNames,
+              start_date: dayjs(data.dateRange.start).format("YYYY-MM-DD"),
+              end_date: dayjs(data.dateRange.end).format("YYYY-MM-DD"),
+            }
+          : p,
+      ),
+    );
+
     handleClose();
-    router.refresh();
   };
 
   if (!isOpen) return null;

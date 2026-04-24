@@ -1,28 +1,32 @@
-import { PlanDetailClient } from "@/features/plan";
-import { getRegions } from "@/features/region";
+"use client";
 
-import { getPlanById, getPlanItemsByPlanId } from "@/shared/data";
+import { useEffect, useMemo, useState } from "react";
 
-interface PlanDetailPageProps {
-  params: Promise<{ id: string }>;
-}
+import { useParams } from "next/navigation";
 
-export default async function PlanDetailPage({ params }: PlanDetailPageProps) {
-  const { id } = await params;
-  const [plan, items, regions] = await Promise.all([
-    getPlanById(id),
-    getPlanItemsByPlanId(id),
-    getRegions(),
-  ]);
+import { PlanDetailClient, usePlan } from "@/features/plan";
+import { getRegions, IRegion } from "@/features/region";
+
+export default function PlanDetailPage() {
+  const { id } = useParams();
+  const { plans } = usePlan();
+  const [regions, setRegions] = useState<IRegion[] | null>([]);
+
+  const plan = useMemo(() => plans.find((p) => p.id === id), [id, plans]);
+
+  const fetchRegions = async () => {
+    const data = await getRegions();
+
+    setRegions(data);
+  };
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchRegions();
+  }, []);
 
   if (!plan)
     return <div className="p-4 text-zinc-400">일정을 찾을 수 없습니다.</div>;
 
-  return (
-    <PlanDetailClient
-      plan={plan}
-      initialItems={items}
-      regions={regions ?? []}
-    />
-  );
+  return <PlanDetailClient key={plan.id} plan={plan} regions={regions} />;
 }
