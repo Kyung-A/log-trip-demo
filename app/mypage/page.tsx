@@ -1,15 +1,21 @@
-import { UserProfileWidget, AccountSettings } from "@/features/user";
+"use client";
 
-import { fakeDiaryCounters, fakeUser } from "@/shared/data/fake-user";
+import { useDiary } from "@/features/diary";
+import { AccountSettings, UserProfileWidget, useUser } from "@/features/user";
 
-export default async function MyPage() {
-  const profile = fakeUser;
-  const counters = fakeDiaryCounters;
-
-  if (!profile && !counters) return null;
+export default function MyPage() {
+  const { user } = useUser();
+  const { diariesCount, publicDiariesCount } = useDiary();
 
   return (
-    <UserProfileWidget isMine profile={profile!} counters={counters!}>
+    <UserProfileWidget
+      isMine
+      profile={user}
+      counters={{
+        diaries_count: diariesCount,
+        public_diaries_count: publicDiariesCount,
+      }}
+    >
       <AccountSettings />
     </UserProfileWidget>
   );

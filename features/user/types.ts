@@ -1,8 +1,5 @@
 export interface IProfile {
   id: string;
-  year_of_birth: string;
-  gender: "female" | "male";
-  platform: string;
   created_at: string;
   about: string | null;
   profile_image: string | null;
@@ -13,8 +10,6 @@ export interface IProfile {
 export interface IDiaryCounters {
   diaries_count: number;
   public_diaries_count: number;
-  applied_count: number;
-  received_count: number;
 }
 
 export interface IUpdateProfileData {

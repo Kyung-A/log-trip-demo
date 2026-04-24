@@ -17,6 +17,8 @@ import { DrawingCanvasDialog } from "./DrawingCanvasDialog";
 import { DrawingModeToggle } from "./DrawingModeToggle";
 import { ImageEditDialog } from "./ImageEditDialog";
 import { UploadDiaryImageField } from "./UploadDiaryImageField";
+import { useUser } from "@/features/user";
+
 import { CitySelectField, IDiary, useDiary } from "../..";
 
 const DEFAULT_FORM_VALUES: Partial<IDiary> = {
@@ -50,6 +52,7 @@ export const DiaryForm = ({
   const router = useRouter();
 
   const { setData } = useDiary();
+  const { user } = useUser();
 
   const {
     control,
@@ -176,10 +179,10 @@ export const DiaryForm = ({
           id,
           user_id: DEMO_USER_ID,
           user_info: {
-            nickname: "여행자김로그",
-            email: "demo@logtrip.com",
-            profile_image: "",
-            about: "여행을 통해 세상을 배우는 중입니다.",
+            nickname: user.nickname,
+            email: user.email,
+            profile_image: user.profile_image ?? "",
+            about: user.about ?? "",
           },
         },
         ...prev,

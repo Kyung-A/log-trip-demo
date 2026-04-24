@@ -1,36 +1,42 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 import { Camera, ChevronLeft, LoaderCircle, UserRound, X } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 
+import { useDiary } from "@/features/diary";
 import { blobUrlToBase64 } from "@/shared";
 
-import { updateUserProfileAction } from "../model";
-import { IProfile } from "../types";
+import { useUser } from "../model";
 
-export const UserProfileForm = ({
-  profile,
-  userId,
-}: {
-  profile: IProfile;
-  userId?: string;
-}) => {
+interface ProfileFormValues {
+  nickname: string;
+  about: string | null;
+}
+
+export const UserProfileForm = () => {
   const router = useRouter();
+  const { user, setUser } = useUser();
+  const { setData } = useDiary();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const {
     control,
     handleSubmit,
     formState: { isSubmitting },
-  } = useForm({
-    defaultValues: profile,
+  } = useForm<ProfileFormValues>({
+    defaultValues: {
+      nickname: user.nickname,
+      about: user.about,
+    },
   });
 
-  const [profileImg, setProfileImg] = useState<string | null>(null);
+  const [profileImg, setProfileImg] = useState<string | null>(
+    user.profile_image,
+  );
 
   const handleDeleted = useCallback(() => setProfileImg(null), []);
 
@@ -38,64 +44,48 @@ export const UserProfileForm = ({
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const file = event.target.files;
       if (!file || file.length === 0) return;
-
-      const newImages = URL.createObjectURL(file[0]);
-
-      setProfileImg(newImages);
+      setProfileImg(URL.createObjectURL(file[0]));
       event.target.value = "";
     },
     [],
   );
 
-  const uploadAndGetUrlImage = async (currentImg: string) => {
-    if (!currentImg.startsWith("blob:")) return currentImg;
-
+  const handleSaveProfile = async (formData: ProfileFormValues) => {
     try {
-      const base64DataUrl = await blobUrlToBase64(currentImg);
-
-      const base64Image = base64DataUrl.split(";base64,").pop();
-      if (!base64Image) return null;
-    } catch (error) {
-      console.error("Image upload failed:", error);
-      return null;
-    }
-  };
-
-  const handleSaveProfile = async (formData: {
-    nickname: string | null;
-    about: string | null;
-    profile_image: string | null;
-  }) => {
-    try {
-      let imageUrl = profileImg;
-
-      if (profileImg && profileImg.startsWith("blob:")) {
-        await uploadAndGetUrlImage(profileImg);
-      } else if (!profileImg) {
-        imageUrl = null;
+      let imageUrl: string | null = profileImg;
+      if (profileImg?.startsWith("blob:")) {
+        imageUrl = await blobUrlToBase64(profileImg);
       }
 
-      const data = {
-        ...formData,
+      const updated = {
+        ...user,
+        nickname: formData.nickname,
+        about: formData.about,
         profile_image: imageUrl,
       };
 
-      const { success } = await updateUserProfileAction({ userId, ...data });
-      if (success) {
-        router.push("/mypage");
-      }
+      setUser(updated);
+      setData((prev) =>
+        prev.map((d) =>
+          d.user_id === user.id
+            ? {
+                ...d,
+                user_info: {
+                  ...d.user_info,
+                  nickname: updated.nickname,
+                  about: updated.about ?? "",
+                  profile_image: imageUrl ?? "",
+                },
+              }
+            : d,
+        ),
+      );
+
+      router.push("/mypage");
     } catch (error) {
       console.error(error);
     }
   };
-
-  useEffect(() => {
-    if (profile?.profile_image) {
-      requestAnimationFrame(() => {
-        setProfileImg(profile.profile_image);
-      });
-    }
-  }, [profile?.profile_image]);
 
   return (
     <>
@@ -163,17 +153,14 @@ export const UserProfileForm = ({
             </div>
           )}
         </div>
-        {/* TODO: 닉네임 필수 */}
+
         <Controller
           control={control}
           name="nickname"
-          rules={{
-            required: "닉네임은 필수입니다.",
-          }}
           render={({ field: { onChange, value } }) => (
             <input
               className="w-40 mt-6 text-xl font-semibold text-center outline-0"
-              placeholder="낙네임을 작성해주세요"
+              placeholder="닉네임을 작성해주세요"
               onChange={onChange}
               value={value}
               maxLength={10}

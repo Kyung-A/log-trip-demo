@@ -2,6 +2,7 @@ import { ToastContainer } from "react-toastify";
 
 import { DiaryProvider } from "@/features/diary";
 import { PlanProvider } from "@/features/plan";
+import { UserProvider } from "@/features/user";
 import { TabBarWrapper } from "@/shared/ui/TabBarWrapper";
 
 import type { Metadata, Viewport } from "next";
@@ -31,14 +32,16 @@ export default function RootLayout({
   return (
     <html>
       <body className="w-screen bg-zinc-50 overflow-x-hidden">
-        <PlanProvider>
-          <DiaryProvider>
-            <main className="max-w-3xl bg-white mx-auto min-h-screen">
-              {children}
-            </main>
-            <TabBarWrapper />
-          </DiaryProvider>
-        </PlanProvider>
+        <UserProvider>
+          <PlanProvider>
+            <DiaryProvider>
+              <main className="max-w-3xl bg-white mx-auto min-h-screen">
+                {children}
+              </main>
+              <TabBarWrapper />
+            </DiaryProvider>
+          </PlanProvider>
+        </UserProvider>
         <ToastContainer
           position="top-center"
           autoClose={3000}

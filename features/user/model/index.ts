@@ -1,1 +1,1 @@
-export { updateUserProfileAction } from "./updateUserProfileAction";
+export { UserProvider, useUser } from "./UserContext";
