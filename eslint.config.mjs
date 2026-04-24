@@ -34,29 +34,6 @@ const eslintConfig = defineConfig([
           argsIgnorePattern: "^_",
         },
       ],
-      "import/no-restricted-paths": [
-        "error",
-        {
-          zones: [
-            {
-              target: "./entities",
-              from: "./features",
-              message: "상향 참조 금지: Entity는 Feature를 참조할 수 없습니다.",
-            },
-            {
-              target: "./features",
-              from: "./app",
-              message: "상향 참조 금지: Feature는 app를 참조할 수 없습니다.",
-            },
-            {
-              target: "./shared",
-              from: "./entities",
-              message:
-                "도메인 오염 금지: Shared는 Entity를 참조할 수 없습니다.",
-            },
-          ],
-        },
-      ],
       "import/order": [
         "error",
         {
@@ -78,21 +55,6 @@ const eslintConfig = defineConfig([
             {
               pattern: "react",
               group: "builtin",
-              position: "before",
-            },
-            {
-              pattern: "@/entities/**",
-              group: "internal",
-              position: "before",
-            },
-            {
-              pattern: "@/features/**",
-              group: "internal",
-              position: "before",
-            },
-            {
-              pattern: "@/shared/**",
-              group: "internal",
               position: "before",
             },
           ],

@@ -1,10 +1,6 @@
 import { type NextRequest } from "next/server";
 
-import { updateSession } from "./shared";
-
-export async function proxy(request: NextRequest) {
-  return await updateSession(request);
-}
+export async function proxy(request: NextRequest) {}
 
 export const config = {
   matcher: [
