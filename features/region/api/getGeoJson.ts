@@ -1,7 +1,5 @@
 "use server";
 
-import { unstable_cache } from "next/cache";
-
 const fetchAndFilterGeoJson = async (
   api_url: string,
   region_code: string,
@@ -36,14 +34,11 @@ export const getGeoJson = async (
   region_code: string,
   shape_name: string,
 ) => {
-  const getCachedGeoJson = unstable_cache(
-    async () => fetchAndFilterGeoJson(api_url, region_code, shape_name),
-    ["geojson-data", api_url, region_code, shape_name],
-    {
-      tags: ["geojson-data"],
-      revalidate: 86400,
-    },
+  const getCachedGeoJson = await fetchAndFilterGeoJson(
+    api_url,
+    region_code,
+    shape_name,
   );
 
-  return getCachedGeoJson();
+  return getCachedGeoJson;
 };

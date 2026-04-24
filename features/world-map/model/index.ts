@@ -1,1 +1,0 @@
-export { revalidateAllData } from "./revalidateAllData";

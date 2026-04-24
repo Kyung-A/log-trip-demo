@@ -8,14 +8,12 @@ import { useRouter } from "next/navigation";
 import { IGeoJson } from "@/features/region";
 import { useMapbox } from "@/shared";
 
-import { revalidateAllData } from "../model";
 import { MapSplashScreen } from "./MapSplashScreen";
 
 import "mapbox-gl/dist/mapbox-gl.css";
 
 export function WorldMap({
   geoJson,
-  userId,
 }: {
   geoJson: IGeoJson[];
   userId?: string;
@@ -27,10 +25,9 @@ export function WorldMap({
 
   const handleRefresh = useCallback(() => {
     startTransition(async () => {
-      await revalidateAllData(userId);
       router.refresh();
     });
-  }, [router, userId]);
+  }, [router]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -113,7 +110,7 @@ export function WorldMap({
       <button
         type="button"
         onClick={handleRefresh}
-        className="absolute bottom-2 z-10 right-2 p-2 bg-white rounded-lg shadow-[0px_0px_10px_-3px_rgba(0,0,0,0.4)]"
+        className="absolute bottom-24 z-10 right-4 p-2 bg-white rounded-lg shadow-[0px_0px_10px_-3px_rgba(0,0,0,0.4)]"
       >
         <RefreshCcw size={24} className={isPending ? "animate-spin" : ""} />
       </button>

@@ -1,5 +1,3 @@
-import { unstable_cache } from "next/cache";
-
 import { createClient } from "@/shared/supabase";
 
 import { IRegion } from "..";
@@ -9,19 +7,12 @@ export const getRegions = async (
 ): Promise<IRegion[] | null> => {
   const supabase = createClient();
 
-  const fetchRegions = unstable_cache(
-    async () => {
-      let q = supabase.from("adm_regions").select("*");
-      if (filters) {
-        q = q.or(filters);
-      }
-      const { data, error } = await q;
-      if (error) throw error;
-      return data;
-    },
-    ["all-regions", filters ?? "default"],
-    { tags: ["all-regions"] },
-  );
+  let q = supabase.from("adm_regions").select("*");
+  if (filters) {
+    q = q.or(filters);
+  }
+  const { data, error } = await q;
+  if (error) throw error;
 
-  return await fetchRegions();
+  return data;
 };
