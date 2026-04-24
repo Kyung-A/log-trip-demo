@@ -72,7 +72,7 @@ export const PlanForm = ({ regions }: { regions: IRegion[] | null }) => {
       <header className="bg-white flex sticky top-0 w-full pb-2 pt-14 border-b border-zinc-200 px-4 z-20">
         <button
           type="button"
-          onClick={() => (step === 1 ? router.back() : setStep(1))}
+          onClick={() => (step === 1 ? router.replace("/plan") : setStep(1))}
           className="flex items-center gap-x-1"
         >
           <ChevronLeft size={22} color="#646464" />

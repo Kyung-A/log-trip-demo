@@ -204,7 +204,7 @@ export const DiaryForm = ({
     <>
       <header className="sticky pt-14 pb-3 top-0 z-30 w-full bg-white border-b border-gray-300 flex items-center px-2">
         <button
-          onClick={() => router.back()}
+          onClick={() => router.replace("/diary")}
           className="flex items-center gap-x-1"
         >
           <ChevronLeft size={30} color="#646464" />
